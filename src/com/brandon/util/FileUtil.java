@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -91,9 +93,12 @@ public class FileUtil {
 			}
 			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-			for (T type : list) {
-				bw.write(type.toString());
-				bw.write(Constants.CSV_DELIMIT);
+			for (Iterator<T> iter = list.iterator(); iter.hasNext(); ) {
+				bw.write(iter.next().toString());
+				
+				if (iter.hasNext()) {
+					bw.write(Constants.CSV_DELIMIT);
+				}
 			}
 			
 			bw.flush();

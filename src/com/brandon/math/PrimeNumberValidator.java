@@ -1,5 +1,8 @@
 package com.brandon.math;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import com.brandon.common.Constants;
@@ -90,7 +93,7 @@ public class PrimeNumberValidator {
 		if (primes.size() == 0 || primes.get(primes.size() - 1) < CAP) {
 			// Generate more primes so we don't run into this problem again
 			generatePrimesTo(CAP * EXTRA);
-//			savePrimes();
+			savePrimes();
 		}
 		
 		for (int i = 0; i < primes.size(); ++i) {
@@ -129,7 +132,9 @@ public class PrimeNumberValidator {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				FileUtil.CSVSave(Constants.PRIMES_PATH, primes);
+				final List<Long> finalList = new ArrayList<Long>(new HashSet<Long>(primes));
+				Collections.sort(finalList);
+				FileUtil.CSVSave(Constants.PRIMES_PATH, finalList);
 			}	
 		}).start();
 	}
@@ -137,23 +142,5 @@ public class PrimeNumberValidator {
 	// Used to check if a number is divisible, excluding 1
 	private static boolean primeDivis(long num, long prime) {
 		return prime != 1 && num % prime == 0;
-	}
-	
-	public static void main(String[] args) {
-		
-		String output = "Number: %d.\n\tNaive:%b, Reg:%b, Fact:%b";
-		
-		for (long num = 1; num < 100000; ++num) {
-//			boolean naive = isPrimeNaive(num);
-//			boolean reg = isPrime(num);
-			boolean fact = isPrimeUsingFactorization(num);
-//			if (naive != reg || naive != fact || fact != reg) {
-//				System.out.println(String.format(output, num, naive, reg, fact));
-//			}
-			if (num % 10000 == 0) {
-				System.out.println(num);
-			}
-		}
-		savePrimes();
 	}
 }
