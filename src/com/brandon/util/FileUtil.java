@@ -82,24 +82,22 @@ public class FileUtil {
 		save(filePath, list, Constants.CSV_DELIMIT);
 	}
 	
-	public static <T> void save(String filePath, List<T> list,  String delimit) {
-		File dest = new File(filePath);
-		
-		if (!dest.exists()) {
-			dest.getParentFile().mkdirs();
-			try {
+	public static synchronized <T> void save(String filePath, List<T> list,  String delimit) {		
+		try {
+			File dest = new File(filePath);
+			if (!dest.exists()) {
+				dest.getParentFile().mkdirs();
 				dest.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		}
-		
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+			
+			BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
 			for (T type : list) {
 				bw.write(type.toString());
 				bw.write(Constants.CSV_DELIMIT);
 			}
+			
+			bw.flush();
+			bw.close();
 		} catch (IOException ioe) {
 			System.out.println("Unable to save primes.");
 			System.out.println(ioe.getMessage());

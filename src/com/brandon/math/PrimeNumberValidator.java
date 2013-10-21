@@ -37,7 +37,7 @@ public class PrimeNumberValidator {
 		if (num < 0) {
 			num *= -1;
 		}
-		for (long i = 0; i < num; ++i) {
+		for (long i = 2; i < num; ++i) {
 			if (primeDivis(num, i)) {
 				return false;
 			}
@@ -60,7 +60,7 @@ public class PrimeNumberValidator {
 		
 		final long CAP = (long) Math.floor(Math.sqrt(num));
 		
-		for (long i = 1; i < CAP; ++i) {
+		for (long i = 2; i <= CAP; ++i) {
 			if (primeDivis(num, i)) {
 				return false;
 			}
@@ -90,7 +90,7 @@ public class PrimeNumberValidator {
 		if (primes.size() == 0 || primes.get(primes.size() - 1) < CAP) {
 			// Generate more primes so we don't run into this problem again
 			generatePrimesTo(CAP * EXTRA);
-			savePrimes();
+//			savePrimes();
 		}
 		
 		for (int i = 0; i < primes.size(); ++i) {
@@ -140,6 +140,20 @@ public class PrimeNumberValidator {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(PrimeNumberValidator.isPrimeUsingFactorization(7));
+		
+		String output = "Number: %d.\n\tNaive:%b, Reg:%b, Fact:%b";
+		
+		for (long num = 1; num < 100000; ++num) {
+//			boolean naive = isPrimeNaive(num);
+//			boolean reg = isPrime(num);
+			boolean fact = isPrimeUsingFactorization(num);
+//			if (naive != reg || naive != fact || fact != reg) {
+//				System.out.println(String.format(output, num, naive, reg, fact));
+//			}
+			if (num % 10000 == 0) {
+				System.out.println(num);
+			}
+		}
+		savePrimes();
 	}
 }
