@@ -63,7 +63,9 @@ public class FileUtil {
 	// Parses the fileContents into a list
 	private static <T> List<T> parse(String fileContents, String delimit, Parser<T> parser) {
 		List<T> ret = new ArrayList<T>();
-		
+		if (fileContents == null) {
+			return ret;
+		}
 		StringTokenizer st = new StringTokenizer(fileContents, delimit);
 		
 		while (st.hasMoreTokens()) {

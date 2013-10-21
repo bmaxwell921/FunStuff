@@ -38,7 +38,7 @@ public class PrimeNumberValidator {
 			num *= -1;
 		}
 		for (long i = 0; i < num; ++i) {
-			if (num % i == 0) {
+			if (primeDivis(num, i)) {
 				return false;
 			}
 		}
@@ -58,15 +58,15 @@ public class PrimeNumberValidator {
 			num *= -1;
 		}
 		
-		final long CAP = (long) Math.ceil(Math.sqrt(num));
+		final long CAP = (long) Math.floor(Math.sqrt(num));
 		
 		for (long i = 1; i < CAP; ++i) {
-			if (num % i == 0) {
+			if (primeDivis(num, i)) {
 				return false;
 			}
 		}
 		
-		return false;
+		return true;
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class PrimeNumberValidator {
 		if (num < 0) {
 			num *= -1;
 		}
-		final long CAP = (long) Math.ceil(Math.sqrt(num));
+		final long CAP = (long) Math.floor(Math.sqrt(num));
 		
 		/*
 		 *  Making sure we've generated enough prime numbers. We need at 
@@ -89,45 +89,57 @@ public class PrimeNumberValidator {
 		 */
 		if (primes.size() == 0 || primes.get(primes.size() - 1) < CAP) {
 			// Generate more primes so we don't run into this problem again
-			generatePrimesTo(num * EXTRA);
+			generatePrimesTo(CAP * EXTRA);
 			savePrimes();
 		}
 		
-		boolean done = false;
-		int i = 0;
-		while (!done) {
+		for (int i = 0; i < primes.size(); ++i) {
 			long currentPrime = primes.get(i);
 			
 			/* Success case. Here we've checked all the lower primes
 			 * and none of them have caused us to break
 			*/
 			if (currentPrime > CAP) {
-				done = true;
+				break;
 			}
 			
 			/*
 			 * Failure case, we've found a number the divides the given
 			 */
-			if (num % currentPrime == 0) {
+			if (primeDivis(num, currentPrime)) {
 				return false;
-			}		
+			}	
 		}
 		
 		return true;
 	}
 
 	private static void generatePrimesTo(long max) {
-		// TODO
+		long num = primes.size() == 0 ? 1 : primes.get(primes.size() - 1);
+		while (num < max) {
+			if (isPrime(num)) {
+				primes.add(num);
+			}
+			++num;
+		}
 	}
 	
 	// Multi-threaded because why not
 	private static void savePrimes() {
-		new Runnable() {
+		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				FileUtil.save(primes);
 			}	
-		};
+		}).start();
 	}
 	
+	// Used to check if a number is divisible, excluding 1
+	private static boolean primeDivis(long num, long prime) {
+		return prime != 1 && num % prime == 0;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(PrimeNumberValidator.isPrimeUsingFactorization(7));
+	}
 }
