@@ -11,4 +11,6 @@ public class Constants {
 			+ File.separator + "primes.csv";
 	
 	public static final String CSV_DELIMIT = ",";
+	
+	public static final long ZERO = 0l;
 }
