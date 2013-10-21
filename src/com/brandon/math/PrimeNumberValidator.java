@@ -1,12 +1,21 @@
 package com.brandon.math;
 
+import java.util.List;
+
+
 /**
  * A class used to validate prime number
  * @author brandon
  *
  */
 public class PrimeNumberValidator {
-
+	
+	private List<Long> primes;
+	
+	
+	static {
+		
+	}
 	/**
 	 * Checks if the given number is prime by checking if the
 	 * number is divisible by any number less than the given.
@@ -48,6 +57,18 @@ public class PrimeNumberValidator {
 			}
 		}
 		
+		return false;
+	}
+	
+	/**
+	 * A method to check whether the given number is prime using
+	 * the idea of prime factorization.
+	 * @param num
+	 * 				The given number to check.
+	 * @return
+	 * 			True if the given number is prime, false otherwise
+	 */
+	public static boolean isPrimeUsingFactorization(long num) {
 		return false;
 	}
 	
