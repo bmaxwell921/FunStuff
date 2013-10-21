@@ -129,7 +129,7 @@ public class PrimeNumberValidator {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				FileUtil.save(primes);
+				FileUtil.CSVSave(Constants.PRIMES_PATH, primes);
 			}	
 		}).start();
 	}

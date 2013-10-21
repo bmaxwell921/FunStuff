@@ -1,7 +1,10 @@
 package com.brandon.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +78,31 @@ public class FileUtil {
 		return ret;
 	}
 	
-	public static <T> void save(List<T> list) {
+	public static <T> void CSVSave(String filePath, List<T> list) {
+		save(filePath, list, Constants.CSV_DELIMIT);
+	}
+	
+	public static <T> void save(String filePath, List<T> list,  String delimit) {
+		File dest = new File(filePath);
 		
+		if (!dest.exists()) {
+			dest.getParentFile().mkdirs();
+			try {
+				dest.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+			for (T type : list) {
+				bw.write(type.toString());
+				bw.write(Constants.CSV_DELIMIT);
+			}
+		} catch (IOException ioe) {
+			System.out.println("Unable to save primes.");
+			System.out.println(ioe.getMessage());
+		}
 	}
 }
