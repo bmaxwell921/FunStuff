@@ -72,4 +72,8 @@ public class FileUtil {
 		
 		return ret;
 	}
+	
+	public static <T> void save(List<T> list) {
+		
+	}
 }
